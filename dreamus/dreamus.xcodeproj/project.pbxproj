@@ -11,9 +11,16 @@
 		CEABD9162ACE50D500B0EDDA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABD9152ACE50D500B0EDDA /* AppDelegate.swift */; };
 		CEABD9182ACE50D500B0EDDA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABD9172ACE50D500B0EDDA /* SceneDelegate.swift */; };
 		CEABD91A2ACE50D500B0EDDA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABD9192ACE50D500B0EDDA /* ViewController.swift */; };
-		CEABD91D2ACE50D500B0EDDA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEABD91B2ACE50D500B0EDDA /* Main.storyboard */; };
 		CEABD91F2ACE50D600B0EDDA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEABD91E2ACE50D600B0EDDA /* Assets.xcassets */; };
 		CEABD9222ACE50D600B0EDDA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEABD9202ACE50D600B0EDDA /* LaunchScreen.storyboard */; };
+		CEABD92D2ACE58E900B0EDDA /* SectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABD92C2ACE58E900B0EDDA /* SectionView.swift */; };
+		CEABD9302ACE63D400B0EDDA /* CircleCollectionMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABD92F2ACE63D400B0EDDA /* CircleCollectionMenuCell.swift */; };
+		CEABD9322ACE917300B0EDDA /* TitleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABD9312ACE917300B0EDDA /* TitleHeaderView.swift */; };
+		CEABD9342ACEF7C200B0EDDA /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABD9332ACEF7C200B0EDDA /* ChartView.swift */; };
+		CEABD9362ACF057A00B0EDDA /* VideoHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABD9352ACF057A00B0EDDA /* VideoHeader.swift */; };
+		CEABD9382ACF085900B0EDDA /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABD9372ACF085900B0EDDA /* VideoView.swift */; };
+		CEABD93A2ACF0A8400B0EDDA /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABD9392ACF0A8400B0EDDA /* VideoCell.swift */; };
+		CEABD93D2ACF117400B0EDDA /* CommonHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABD93C2ACF117400B0EDDA /* CommonHeaderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,10 +30,17 @@
 		CEABD9152ACE50D500B0EDDA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CEABD9172ACE50D500B0EDDA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		CEABD9192ACE50D500B0EDDA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		CEABD91C2ACE50D500B0EDDA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CEABD91E2ACE50D600B0EDDA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CEABD9212ACE50D600B0EDDA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CEABD9232ACE50D600B0EDDA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CEABD92C2ACE58E900B0EDDA /* SectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionView.swift; sourceTree = "<group>"; };
+		CEABD92F2ACE63D400B0EDDA /* CircleCollectionMenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleCollectionMenuCell.swift; sourceTree = "<group>"; };
+		CEABD9312ACE917300B0EDDA /* TitleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleHeaderView.swift; sourceTree = "<group>"; };
+		CEABD9332ACEF7C200B0EDDA /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
+		CEABD9352ACF057A00B0EDDA /* VideoHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoHeader.swift; sourceTree = "<group>"; };
+		CEABD9372ACF085900B0EDDA /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
+		CEABD9392ACF0A8400B0EDDA /* VideoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
+		CEABD93C2ACF117400B0EDDA /* CommonHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonHeaderView.swift; sourceTree = "<group>"; };
 		D740469839D9F955275B179B /* Pods-dreamus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dreamus.debug.xcconfig"; path = "Target Support Files/Pods-dreamus/Pods-dreamus.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -63,15 +77,62 @@
 		CEABD9142ACE50D500B0EDDA /* dreamus */ = {
 			isa = PBXGroup;
 			children = (
+				CEABD92B2ACE583A00B0EDDA /* Model */,
+				CEABD92A2ACE583000B0EDDA /* ViewModel */,
+				CEABD9292ACE582700B0EDDA /* View */,
 				CEABD9152ACE50D500B0EDDA /* AppDelegate.swift */,
 				CEABD9172ACE50D500B0EDDA /* SceneDelegate.swift */,
-				CEABD9192ACE50D500B0EDDA /* ViewController.swift */,
-				CEABD91B2ACE50D500B0EDDA /* Main.storyboard */,
 				CEABD91E2ACE50D600B0EDDA /* Assets.xcassets */,
 				CEABD9202ACE50D600B0EDDA /* LaunchScreen.storyboard */,
 				CEABD9232ACE50D600B0EDDA /* Info.plist */,
 			);
 			path = dreamus;
+			sourceTree = "<group>";
+		};
+		CEABD9292ACE582700B0EDDA /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CEABD93B2ACF0AD700B0EDDA /* SubView */,
+				CEABD92E2ACE63BC00B0EDDA /* Cell */,
+				CEABD9192ACE50D500B0EDDA /* ViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CEABD92A2ACE583000B0EDDA /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		CEABD92B2ACE583A00B0EDDA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CEABD92E2ACE63BC00B0EDDA /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				CEABD92F2ACE63D400B0EDDA /* CircleCollectionMenuCell.swift */,
+				CEABD9312ACE917300B0EDDA /* TitleHeaderView.swift */,
+				CEABD9332ACEF7C200B0EDDA /* ChartView.swift */,
+				CEABD9352ACF057A00B0EDDA /* VideoHeader.swift */,
+				CEABD9392ACF0A8400B0EDDA /* VideoCell.swift */,
+				CEABD93C2ACF117400B0EDDA /* CommonHeaderView.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		CEABD93B2ACF0AD700B0EDDA /* SubView */ = {
+			isa = PBXGroup;
+			children = (
+				CEABD92C2ACE58E900B0EDDA /* SectionView.swift */,
+				CEABD9372ACF085900B0EDDA /* VideoView.swift */,
+			);
+			path = SubView;
 			sourceTree = "<group>";
 		};
 		E0B95928217B4B1B1F8F447D /* Frameworks */ = {
@@ -88,7 +149,6 @@
 				D740469839D9F955275B179B /* Pods-dreamus.debug.xcconfig */,
 				0A3E2E95E433FA96E1251B58 /* Pods-dreamus.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -154,7 +214,6 @@
 			files = (
 				CEABD9222ACE50D600B0EDDA /* LaunchScreen.storyboard in Resources */,
 				CEABD91F2ACE50D600B0EDDA /* Assets.xcassets in Resources */,
-				CEABD91D2ACE50D500B0EDDA /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,8 +266,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEABD9302ACE63D400B0EDDA /* CircleCollectionMenuCell.swift in Sources */,
+				CEABD92D2ACE58E900B0EDDA /* SectionView.swift in Sources */,
 				CEABD91A2ACE50D500B0EDDA /* ViewController.swift in Sources */,
+				CEABD9342ACEF7C200B0EDDA /* ChartView.swift in Sources */,
+				CEABD9362ACF057A00B0EDDA /* VideoHeader.swift in Sources */,
+				CEABD93A2ACF0A8400B0EDDA /* VideoCell.swift in Sources */,
 				CEABD9162ACE50D500B0EDDA /* AppDelegate.swift in Sources */,
+				CEABD9382ACF085900B0EDDA /* VideoView.swift in Sources */,
+				CEABD9322ACE917300B0EDDA /* TitleHeaderView.swift in Sources */,
+				CEABD93D2ACF117400B0EDDA /* CommonHeaderView.swift in Sources */,
 				CEABD9182ACE50D500B0EDDA /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -216,14 +283,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		CEABD91B2ACE50D500B0EDDA /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				CEABD91C2ACE50D500B0EDDA /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		CEABD9202ACE50D600B0EDDA /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -362,7 +421,7 @@
 				INFOPLIST_FILE = dreamus/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -395,7 +454,7 @@
 				INFOPLIST_FILE = dreamus/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
