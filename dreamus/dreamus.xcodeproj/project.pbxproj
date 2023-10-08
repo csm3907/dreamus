@@ -21,6 +21,15 @@
 		CEABD9382ACF085900B0EDDA /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABD9372ACF085900B0EDDA /* VideoView.swift */; };
 		CEABD93A2ACF0A8400B0EDDA /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABD9392ACF0A8400B0EDDA /* VideoCell.swift */; };
 		CEABD93D2ACF117400B0EDDA /* CommonHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABD93C2ACF117400B0EDDA /* CommonHeaderView.swift */; };
+		CEABD9412AD1A0B700B0EDDA /* DreamusAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEABD9402AD1A0B700B0EDDA /* DreamusAPI.swift */; };
+		CEF966462AD1A41F00D603C3 /* NetworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF966452AD1A41F00D603C3 /* NetworkProvider.swift */; };
+		CEF966482AD1AC7200D603C3 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF966472AD1AC7200D603C3 /* HomeViewModel.swift */; };
+		CEF9664A2AD1B46100D603C3 /* DreamUsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF966492AD1B46100D603C3 /* DreamUsModel.swift */; };
+		CEF9664D2AD1B5DD00D603C3 /* PrimitiveSequence+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF9664C2AD1B5DD00D603C3 /* PrimitiveSequence+Extension.swift */; };
+		CEF966502AD1B80A00D603C3 /* DreamUsNetworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF9664F2AD1B80A00D603C3 /* DreamUsNetworkProvider.swift */; };
+		CEF966522AD28E8700D603C3 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF966512AD28E8700D603C3 /* ImageCell.swift */; };
+		CEF966542AD2973C00D603C3 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF966532AD2973C00D603C3 /* UIViewController+Extension.swift */; };
+		CEF966562AD2974F00D603C3 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF966552AD2974F00D603C3 /* UIImageView+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +50,15 @@
 		CEABD9372ACF085900B0EDDA /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
 		CEABD9392ACF0A8400B0EDDA /* VideoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
 		CEABD93C2ACF117400B0EDDA /* CommonHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonHeaderView.swift; sourceTree = "<group>"; };
+		CEABD9402AD1A0B700B0EDDA /* DreamusAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamusAPI.swift; sourceTree = "<group>"; };
+		CEF966452AD1A41F00D603C3 /* NetworkProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkProvider.swift; sourceTree = "<group>"; };
+		CEF966472AD1AC7200D603C3 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		CEF966492AD1B46100D603C3 /* DreamUsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamUsModel.swift; sourceTree = "<group>"; };
+		CEF9664C2AD1B5DD00D603C3 /* PrimitiveSequence+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PrimitiveSequence+Extension.swift"; sourceTree = "<group>"; };
+		CEF9664F2AD1B80A00D603C3 /* DreamUsNetworkProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamUsNetworkProvider.swift; sourceTree = "<group>"; };
+		CEF966512AD28E8700D603C3 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
+		CEF966532AD2973C00D603C3 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
+		CEF966552AD2974F00D603C3 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		D740469839D9F955275B179B /* Pods-dreamus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dreamus.debug.xcconfig"; path = "Target Support Files/Pods-dreamus/Pods-dreamus.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -77,6 +95,8 @@
 		CEABD9142ACE50D500B0EDDA /* dreamus */ = {
 			isa = PBXGroup;
 			children = (
+				CEF9664B2AD1B5CC00D603C3 /* Extension */,
+				CEABD93E2AD19F1200B0EDDA /* Network */,
 				CEABD92B2ACE583A00B0EDDA /* Model */,
 				CEABD92A2ACE583000B0EDDA /* ViewModel */,
 				CEABD9292ACE582700B0EDDA /* View */,
@@ -102,6 +122,7 @@
 		CEABD92A2ACE583000B0EDDA /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				CEF966472AD1AC7200D603C3 /* HomeViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -109,6 +130,7 @@
 		CEABD92B2ACE583A00B0EDDA /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CEF966492AD1B46100D603C3 /* DreamUsModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -122,6 +144,7 @@
 				CEABD9352ACF057A00B0EDDA /* VideoHeader.swift */,
 				CEABD9392ACF0A8400B0EDDA /* VideoCell.swift */,
 				CEABD93C2ACF117400B0EDDA /* CommonHeaderView.swift */,
+				CEF966512AD28E8700D603C3 /* ImageCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -133,6 +156,42 @@
 				CEABD9372ACF085900B0EDDA /* VideoView.swift */,
 			);
 			path = SubView;
+			sourceTree = "<group>";
+		};
+		CEABD93E2AD19F1200B0EDDA /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				CEF9664E2AD1B7FA00D603C3 /* Provider */,
+				CEABD93F2AD19F2000B0EDDA /* Target */,
+				CEF966452AD1A41F00D603C3 /* NetworkProvider.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		CEABD93F2AD19F2000B0EDDA /* Target */ = {
+			isa = PBXGroup;
+			children = (
+				CEABD9402AD1A0B700B0EDDA /* DreamusAPI.swift */,
+			);
+			path = Target;
+			sourceTree = "<group>";
+		};
+		CEF9664B2AD1B5CC00D603C3 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				CEF9664C2AD1B5DD00D603C3 /* PrimitiveSequence+Extension.swift */,
+				CEF966532AD2973C00D603C3 /* UIViewController+Extension.swift */,
+				CEF966552AD2974F00D603C3 /* UIImageView+Extension.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		CEF9664E2AD1B7FA00D603C3 /* Provider */ = {
+			isa = PBXGroup;
+			children = (
+				CEF9664F2AD1B80A00D603C3 /* DreamUsNetworkProvider.swift */,
+			);
+			path = Provider;
 			sourceTree = "<group>";
 		};
 		E0B95928217B4B1B1F8F447D /* Frameworks */ = {
@@ -267,12 +326,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEABD9302ACE63D400B0EDDA /* CircleCollectionMenuCell.swift in Sources */,
+				CEF966462AD1A41F00D603C3 /* NetworkProvider.swift in Sources */,
+				CEF9664D2AD1B5DD00D603C3 /* PrimitiveSequence+Extension.swift in Sources */,
 				CEABD92D2ACE58E900B0EDDA /* SectionView.swift in Sources */,
+				CEF966502AD1B80A00D603C3 /* DreamUsNetworkProvider.swift in Sources */,
 				CEABD91A2ACE50D500B0EDDA /* ViewController.swift in Sources */,
 				CEABD9342ACEF7C200B0EDDA /* ChartView.swift in Sources */,
+				CEF9664A2AD1B46100D603C3 /* DreamUsModel.swift in Sources */,
+				CEF966542AD2973C00D603C3 /* UIViewController+Extension.swift in Sources */,
 				CEABD9362ACF057A00B0EDDA /* VideoHeader.swift in Sources */,
+				CEF966562AD2974F00D603C3 /* UIImageView+Extension.swift in Sources */,
 				CEABD93A2ACF0A8400B0EDDA /* VideoCell.swift in Sources */,
+				CEABD9412AD1A0B700B0EDDA /* DreamusAPI.swift in Sources */,
+				CEF966522AD28E8700D603C3 /* ImageCell.swift in Sources */,
 				CEABD9162ACE50D500B0EDDA /* AppDelegate.swift in Sources */,
+				CEF966482AD1AC7200D603C3 /* HomeViewModel.swift in Sources */,
 				CEABD9382ACF085900B0EDDA /* VideoView.swift in Sources */,
 				CEABD9322ACE917300B0EDDA /* TitleHeaderView.swift in Sources */,
 				CEABD93D2ACF117400B0EDDA /* CommonHeaderView.swift in Sources */,

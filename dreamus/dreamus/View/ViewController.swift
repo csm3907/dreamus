@@ -7,8 +7,11 @@
 
 import UIKit
 import SnapKit
+import ReactorKit
+import RxSwift
+import RxCocoa
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, ReactorKit.View {
     
     lazy var sectionView: SectionView = {
         let view = SectionView(frame: .zero)
@@ -17,7 +20,7 @@ class ViewController: UIViewController {
     }()
     
     private var collectionView: UICollectionView!
-    private var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
+    private var dataSource: UICollectionViewDiffableDataSource<Section, DreamUsList>!
     
     enum Section: Int {
         case chart
@@ -26,8 +29,16 @@ class ViewController: UIViewController {
         case video
     }
     
-    struct Item: Hashable {
-        let identifier: String
+    var disposeBag = DisposeBag()
+    typealias Reactor = HomeViewModel
+    
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        reactor = HomeViewModel()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
@@ -37,7 +48,19 @@ class ViewController: UIViewController {
         setupUI()
         setCollectionView()
         makeDataSource()
-        performQuery(with: nil)
+        reactor?.action.onNext(.viewDidLoad)
+    }
+    
+    func bind(reactor: HomeViewModel) {
+        reactor.state
+            .compactMap { $0.listData }
+            .asDriver(onErrorJustReturn: DreamUsList())
+            .drive(with: self) { vc, listData in
+                vc.performQuery(with: listData)
+            }
+            .disposed(by: disposeBag)
+        
+        
     }
     
     private func setupUI() {
@@ -53,7 +76,7 @@ class ViewController: UIViewController {
     
     private func setCollectionView() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: getLayout())
-        collectionView.register(TestCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.register(ImageCell.self, forCellWithReuseIdentifier: "ImageCell")
         collectionView.register(ChartView.self, forCellWithReuseIdentifier: "ChartView")
         collectionView.register(VideoCell.self, forCellWithReuseIdentifier: "VideoCell")
         collectionView.register(VideoHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "VideoHeader")
@@ -69,22 +92,22 @@ class ViewController: UIViewController {
     }
     
     private func makeDataSource() {
-        dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView) { collectionView, indexPath, item in
+        dataSource = UICollectionViewDiffableDataSource<Section, DreamUsList>(collectionView: collectionView) { collectionView, indexPath, item in
             switch Section(rawValue: indexPath.section) {
             case .chart:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChartView", for: indexPath) as? ChartView
+                cell?.performQuery(with: "")
                 return cell
                 
             case .genre:
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? TestCell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? ImageCell
                 cell?.backgroundColor = .yellow
-                cell?.label?.text = item.identifier
+                
                 return cell
                 
             case .audio:
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? TestCell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? ImageCell
                 cell?.backgroundColor = .red
-                cell?.label?.text = item.identifier
                 return cell
                 
             case .video:
@@ -96,9 +119,8 @@ class ViewController: UIViewController {
                 return cell
                 
             case .none:
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? TestCell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? ImageCell
                 cell?.backgroundColor = .white
-                cell?.label?.text = item.identifier
                 return cell
             }
         }
@@ -127,7 +149,7 @@ class ViewController: UIViewController {
                 
             case .video:
                 let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "VideoHeader", for: indexPath) as? VideoHeader
-                view?.backgroundColor = .cyan
+                view?.backgroundColor = .white
                 return view
                 
             default:
@@ -256,54 +278,21 @@ class ViewController: UIViewController {
         }
     }
     
-    func performQuery(with filter: String?) {
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
+    func performQuery(with list: DreamUsList) {
+        guard let listData = list.data else { return }
+        var snapshot = NSDiffableDataSourceSnapshot<Section, DreamUsList>()
         snapshot.appendSections([.chart, .genre, .audio, .video])
         
-        let itemsInSection1 = (1...3).map { Item(identifier: "Section 1 - Item \($0)") }
-        snapshot.appendItems(itemsInSection1, toSection: .chart)
-        
-        let itemsInSection2 = (1...5).map { Item(identifier: "Section 2 - Item \($0)") }
-        snapshot.appendItems(itemsInSection2, toSection: .genre)
-        
-        let itemsInSection3 = (1...5).map { Item(identifier: "Section 3 - Item \($0)") }
-        snapshot.appendItems(itemsInSection3, toSection: .audio)
-        
-        let itemsInSection4 = (1...20).map { Item(identifier: "Section 4 - Item \($0)") }
-        snapshot.appendItems(itemsInSection4, toSection: .video)
-        
+        let itemsInSection1 = [list]
+        for _ in 0...10 {
+            snapshot.appendItems([list])
+        }
+//        snapshot.appendItems(itemsInSection1, toSection: .chart)
+//        snapshot.appendItems(itemsInSection1, toSection: .genre)
+//        snapshot.appendItems(itemsInSection1, toSection: .audio)
+//        snapshot.appendItems(itemsInSection1, toSection: .video)
         self.dataSource.apply(snapshot, animatingDifferences: true)
     }
     
 }
 
-class TestCell: UICollectionViewCell {
-    
-    weak var label: UILabel?
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.setupViews()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func setupViews() {
-        self.contentView.layer.borderWidth = 0.5
-        self.contentView.layer.borderColor = UIColor.black.cgColor
-        
-        let label = UILabel()
-        label.textAlignment = .center
-        self.contentView.addSubview(label)
-        self.label = label
-        label.snp.remakeConstraints {
-            $0.center.equalToSuperview()
-        }
-    }
-    
-    func configure(text: String) {
-        self.label?.text = text
-    }
-}

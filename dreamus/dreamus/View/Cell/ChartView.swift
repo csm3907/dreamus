@@ -121,10 +121,10 @@ class ChartView: UICollectionViewCell {
     }
     
     private func configureCollectionView() {
-        collectionView.register(TestCell.self, forCellWithReuseIdentifier: "TestCell")
+        collectionView.register(ImageCell.self, forCellWithReuseIdentifier: "ImageCell")
         
         dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView) { collectionView, indexPath, item in
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TestCell", for: indexPath) as? TestCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? ImageCell
             cell?.label?.text = item.identifier
             return cell
         }
