@@ -36,7 +36,7 @@ class VideoCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        //videoView.prepare(image: nil, artistText: nil, titleText: nil, timeText: nil)
+        videoView.prepare(image: "", artistText: nil, titleText: nil, timeText: nil)
     }
     
 }

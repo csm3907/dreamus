@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 final class VideoView: UIView {
     lazy var imageView: UIImageView = {
@@ -74,8 +75,8 @@ final class VideoView: UIView {
         }
     }
     
-    func prepare(image: UIImage?, artistText: String?, titleText: String?, timeText: String?) {
-        imageView.image = image
+    func prepare(image: String = "", artistText: String?, titleText: String?, timeText: String?) {
+        imageView.kf.setImage(with: URL(string: image))
         artistLabel.text = artistText
         titleLabel.text = titleText
         timeLabel.text = timeText

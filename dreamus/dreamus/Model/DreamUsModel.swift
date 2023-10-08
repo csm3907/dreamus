@@ -68,7 +68,7 @@ struct DreamUsList: Codable, Hashable {
         var programCategoryID: Int?
         var programCategoryType: String?
         var displayTitle: String?
-        var imgURL: String?
+        var imgUrl: String?
     }
 
     // MARK: - SectionList

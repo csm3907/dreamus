@@ -15,6 +15,11 @@ class DreamUsNetworkProvider: NetworkProvider {
         let api = DreamusAPI.getList
         return self.request(MultiTarget(api)).generateObjectModel()
     }
+    
+    func getTrackDetailInfo(trackID: Int) -> Single<SongDetailModel?> {
+        let api = DreamusAPI.getSongDetail(trackID: "\(trackID)")
+        return self.request(MultiTarget(api)).generateObjectModel()
+    }
 }
 
 

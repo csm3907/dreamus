@@ -6,8 +6,11 @@
 //
 
 import UIKit
+import ReactorKit
+import RxSwift
 
 class ChartView: UICollectionViewCell {
+    var disposeBag = DisposeBag()
     
     enum Section: Hashable {
         case start
@@ -43,12 +46,17 @@ class ChartView: UICollectionViewCell {
         return collectionView
     }()
     
-    private var dataSource: UICollectionViewDiffableDataSource<Section, Item>?
+    lazy var pageControl: UIPageControl = {
+        let control =  UIPageControl()
+        return control
+    }()
+    
+    private var dataSource: UICollectionViewDiffableDataSource<Section, DreamUsList.TrackList>?
+    private var reactor: HomeViewModel!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = .lightGray
         setupView()
         configureCollectionView()
         performQuery(with: nil)
@@ -58,6 +66,12 @@ class ChartView: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        disposeBag = DisposeBag()
+    }
+        
     private func getLayoutChartSection() -> UICollectionViewLayout {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
@@ -79,15 +93,23 @@ class ChartView: UICollectionViewCell {
         
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .groupPaging
+        section.visibleItemsInvalidationHandler = { (items, contentOffset, environment) -> Void in
+            let currentPage = Int(max(0, round(contentOffset.x / environment.container.contentSize.width)))
+            self.pageControl.currentPage = currentPage
+        }
+        
         return UICollectionViewCompositionalLayout(section: section)
     }
     
     
     private func setupView() {
+        backgroundColor = .lightGray
+        
         addSubview(titleLabel)
         addSubview(subTitleLabel)
         addSubview(timeLabel)
         addSubview(collectionView)
+        addSubview(pageControl)
         
         titleLabel.snp.makeConstraints {
             $0.top.leading.equalToSuperview().offset(10)
@@ -106,28 +128,63 @@ class ChartView: UICollectionViewCell {
         collectionView.snp.makeConstraints {
             $0.top.equalTo(subTitleLabel.snp.bottom).offset(20)
             $0.leading.trailing.equalToSuperview().inset(10)
+        }
+        
+        pageControl.snp.makeConstraints {
+            $0.top.equalTo(collectionView.snp.bottom).offset(20)
+            $0.centerX.equalToSuperview()
             $0.bottom.equalToSuperview().inset(10)
         }
     }
     
-    func performQuery(with filter: String?) {
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
+    func performQuery(with filter: DreamUsList.ChartList?) {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, DreamUsList.TrackList>()
         snapshot.appendSections([.start])
         
-        let itemsInSection1 = (1...12).map { Item(identifier: "\($0)") }
+        let itemsInSection1 = filter?.trackList ?? []
         snapshot.appendItems(itemsInSection1)
         
         self.dataSource?.apply(snapshot, animatingDifferences: true)
     }
     
     private func configureCollectionView() {
-        collectionView.register(ImageCell.self, forCellWithReuseIdentifier: "ImageCell")
+        collectionView.register(ChartCell.self, forCellWithReuseIdentifier: "ChartCell")
+        collectionView.delegate = self
         
-        dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView) { collectionView, indexPath, item in
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? ImageCell
-            cell?.label?.text = item.identifier
+        dataSource = UICollectionViewDiffableDataSource<Section, DreamUsList.TrackList>(collectionView: collectionView) { collectionView, indexPath, item in
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChartCell", for: indexPath) as? ChartCell
+            if let imageUrl = item.album?.imgList?.first?.url, let title = item.name, let artist = item.representationArtist?.name {
+                cell?.prepare(image: imageUrl, descText: artist, titleText: title, numbering: indexPath.row)
+            }
             return cell
         }
     }
     
+    func configure(title: String, subTitle: String, time: String, pageCount: Int) {
+        titleLabel.text = title
+        subTitleLabel.text = subTitle
+        timeLabel.text = time
+        pageControl.numberOfPages = pageCount
+        pageControl.currentPage = 0
+    }
+    
+    func configureViewModel(viewModel: HomeViewModel?) {
+        reactor = viewModel
+        bind()
+    }
+    
+    private func bind() {
+        
+    }
+    
+}
+
+extension ChartView: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedItem = dataSource?.itemIdentifier(for: indexPath)
+        let trackID = selectedItem?.id
+        let artistName = selectedItem?.representationArtist?.name
+        
+        reactor?.action.onNext(.selectItem(trackID: trackID, artistName: artistName))
+    }
 }

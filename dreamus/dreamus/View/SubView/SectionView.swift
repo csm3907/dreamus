@@ -13,6 +13,7 @@ import SnapKit
 class SectionView: UIView {
     
     let items = ["차트", "장르/테마", "오디오", "영상"]
+    var disposeBag = DisposeBag()
     
     lazy var layout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
@@ -28,21 +29,35 @@ class SectionView: UIView {
         return collectionView
     }()
     
+    var reactor: HomeViewModel?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setupUI()
-        bind()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configureViewModel(viewModel: HomeViewModel?) {
+        self.reactor = viewModel
+        
+        bind()
+    }
+    
     // MARK: - Private func
     
     private func bind() {
-        
+        reactor?.state
+            .compactMap { $0.section }
+            .subscribe(on: MainScheduler.instance)
+            .subscribe { [weak self] sectionIndex in
+                guard let self else { return }
+                //self.collectionView.selectItem(at: IndexPath(row: sectionIndex, section: 0), animated: false, scrollPosition: .left)
+            }
+            .disposed(by: disposeBag)
     }
     
     private func setupUI() {
@@ -55,6 +70,7 @@ class SectionView: UIView {
         collectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        collectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .left)
     }
     
 }
@@ -73,5 +89,9 @@ extension SectionView: UICollectionViewDelegate, UICollectionViewDataSource, UIC
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let size = CircleCollectionMenuCell.fittingSize(availableHeight: 36, name: items[indexPath.item])
         return CGSize(width: size.width + CGFloat(5), height: size.height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        reactor?.action.onNext(.selectSection(sectionID: indexPath.row))
     }
 }

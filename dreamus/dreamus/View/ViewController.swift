@@ -16,17 +16,32 @@ class ViewController: UIViewController, ReactorKit.View {
     lazy var sectionView: SectionView = {
         let view = SectionView(frame: .zero)
         view.backgroundColor = .white
+        view.configureViewModel(viewModel: reactor)
         return view
     }()
     
-    private var collectionView: UICollectionView!
-    private var dataSource: UICollectionViewDiffableDataSource<Section, DreamUsList>!
+    lazy var layout: UICollectionViewLayout = {
+        let layout = getLayout()
+        return layout
+    }()
+    
+    lazy var collectionView: UICollectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
+    private var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
     
     enum Section: Int {
         case chart
         case genre
         case audio
         case video
+    }
+    
+    struct Item: Hashable {
+        let identifier: Int
+        
+        let chartList: [DreamUsList.ChartList]?
+        let genreList: [DreamUsList.SectionList]?
+        let audioList: [DreamUsList.List]?
+        let videoList: [DreamUsList.VideoList]?
     }
     
     var disposeBag = DisposeBag()
@@ -60,7 +75,33 @@ class ViewController: UIViewController, ReactorKit.View {
             }
             .disposed(by: disposeBag)
         
+        reactor.state
+            .compactMap { $0.detailVC }
+            .subscribe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] params in
+                guard let self else { return }
+                guard let trackID = params.trackID else { return }
+                guard let artistName = params.artistName else { return }
+                let detailVC = DetailViewController(viewModel: self.reactor ?? HomeViewModel(), trackID: trackID, artistName: artistName)
+                self.present(detailVC, animated: true)
+            })
+            .disposed(by: disposeBag)
         
+        reactor.state
+            .compactMap { $0.section }
+            .subscribe(on: MainScheduler.instance)
+            .subscribe { [weak self] sectionIndex in
+                guard let self else { return }
+                let indexPathToScroll = IndexPath(item: 0, section: sectionIndex)
+                if let headerAttributes = collectionView.layoutAttributesForSupplementaryElement(ofKind: UICollectionView.elementKindSectionHeader, at: indexPathToScroll) {
+                    // 섹션 헤더 뷰의 frame을 가져와 스크롤 위치로 설정합니다.
+                    let headerFrame = headerAttributes.frame
+                    self.collectionView.setContentOffset(CGPoint(x: 0, y: headerFrame.origin.y), animated: true)
+                } else {
+                    self.collectionView.scrollToItem(at: indexPathToScroll, at: .top, animated: true)
+                }
+            }
+            .disposed(by: disposeBag)
     }
     
     private func setupUI() {
@@ -75,10 +116,10 @@ class ViewController: UIViewController, ReactorKit.View {
     }
     
     private func setCollectionView() {
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: getLayout())
         collectionView.register(ImageCell.self, forCellWithReuseIdentifier: "ImageCell")
         collectionView.register(ChartView.self, forCellWithReuseIdentifier: "ChartView")
         collectionView.register(VideoCell.self, forCellWithReuseIdentifier: "VideoCell")
+        collectionView.register(GenreView.self, forCellWithReuseIdentifier: "GenreView")
         collectionView.register(VideoHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "VideoHeader")
         collectionView.register(TitleHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "TitleHeaderView")
         collectionView.register(CommonHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "CommonHeaderView")
@@ -89,33 +130,63 @@ class ViewController: UIViewController, ReactorKit.View {
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
+        
+        collectionView.rx.contentOffset
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .observe(on: MainScheduler.asyncInstance)
+            .subscribe(onNext: { [weak self] _ in
+                guard let self else { return }
+                guard let indexPath = self.collectionView.indexPathsForVisibleItems.first else {
+                    return
+                }
+                print("indexPath : \(indexPath.section)")
+                self.reactor?.action.onNext(.selectSection(sectionID: indexPath.section))
+            })
+            .disposed(by: disposeBag)
+        
     }
     
     private func makeDataSource() {
-        dataSource = UICollectionViewDiffableDataSource<Section, DreamUsList>(collectionView: collectionView) { collectionView, indexPath, item in
+        dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView) { collectionView, indexPath, item in
             switch Section(rawValue: indexPath.section) {
             case .chart:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChartView", for: indexPath) as? ChartView
-                cell?.performQuery(with: "")
+                let index = item.identifier
+                let themeData = item.chartList?[index]
+                if let title = themeData?.name, let subTItle = themeData?.description, let time = themeData?.basedOnUpdate {
+                    let count = floor(Double((themeData?.trackList?.count ?? 0) / 5))
+                    cell?.configure(title: title, subTitle: subTItle, time: time, pageCount: Int(count))
+                }
+                cell?.performQuery(with: themeData)
+                cell?.configureViewModel(viewModel: self.reactor)
                 return cell
                 
             case .genre:
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? ImageCell
-                cell?.backgroundColor = .yellow
-                
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GenreView", for: indexPath) as? GenreView
+                let index = item.identifier
+                let genreData = item.genreList?[index]
+                cell?.performQuery(with: genreData)
+                if let title = genreData?.name {
+                    cell?.configure(title: title)
+                }
                 return cell
                 
             case .audio:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? ImageCell
-                cell?.backgroundColor = .red
+                let index = item.identifier
+                if let imageUrl = item.audioList?[index].imgUrl, let title = item.audioList?[index].displayTitle {
+                    cell?.configure(imageUrl: imageUrl, title: title)
+                }
                 return cell
                 
             case .video:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "VideoCell", for: indexPath) as? VideoCell
                 cell?.backgroundColor = .white
-                // TODO: cell setup
+                let index = item.identifier
+                if let imageUrl = item.videoList?[index].thumbnailImageList?.first?.url, let title = item.videoList?[index].videoNm, let artist = item.videoList?[index].representationArtist?.name, let playTm = item.videoList?[index].playTm {
+                    cell?.videoView.prepare(image: imageUrl, artistText: artist, titleText: title, timeText: playTm)
+                }
                 
-                //cell?.videoView.prepare(image: nil, artistText: nil, titleText: nil, timeText: nil)
                 return cell
                 
             case .none:
@@ -150,6 +221,14 @@ class ViewController: UIViewController, ReactorKit.View {
             case .video:
                 let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "VideoHeader", for: indexPath) as? VideoHeader
                 view?.backgroundColor = .white
+                
+                let section = self.dataSource.snapshot().sectionIdentifiers[indexPath.section]
+                let itemsInSection = self.dataSource.snapshot().itemIdentifiers(inSection: section)
+                guard let videoListFirstItem = itemsInSection.first?.videoList?.first else { return view }
+                if let thumbNail = videoListFirstItem.thumbnailImageList?.first?.url, let title = videoListFirstItem.videoNm, let artist = videoListFirstItem.representationArtist?.name, let playTm = videoListFirstItem.playTm {
+                    view?.videoView.prepare(image: thumbNail, artistText: artist, titleText: title, timeText: playTm)
+                }
+                
                 return view
                 
             default:
@@ -238,7 +317,7 @@ class ViewController: UIViewController, ReactorKit.View {
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(500)
+            heightDimension: .fractionalWidth(1.3)
         )
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         
@@ -257,14 +336,32 @@ class ViewController: UIViewController, ReactorKit.View {
         return section
     }
     
+    private func getGenreLayout() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .fractionalHeight(1.0)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 8, bottom: 12, trailing: 8)
+        
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .fractionalWidth(2.5)
+        )
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        return section
+    }
+    
     private func getLayout() -> UICollectionViewLayout {
-        return UICollectionViewCompositionalLayout.init { sectionIndex, env in
+        let layout = UICollectionViewCompositionalLayout.init { sectionIndex, env in
             switch Section(rawValue: sectionIndex) {
             case .chart:
                 return self.getChartLayout()
                 
             case .genre:
-                return self.createLayout()
+                return self.getGenreLayout()
                 
             case .audio:
                 return self.createLayout()
@@ -276,23 +373,31 @@ class ViewController: UIViewController, ReactorKit.View {
                 return self.createLayout()
             }
         }
+        return layout
     }
     
     func performQuery(with list: DreamUsList) {
         guard let listData = list.data else { return }
-        var snapshot = NSDiffableDataSourceSnapshot<Section, DreamUsList>()
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
         snapshot.appendSections([.chart, .genre, .audio, .video])
         
-        let itemsInSection1 = [list]
-        for _ in 0...10 {
-            snapshot.appendItems([list])
-        }
-//        snapshot.appendItems(itemsInSection1, toSection: .chart)
-//        snapshot.appendItems(itemsInSection1, toSection: .genre)
-//        snapshot.appendItems(itemsInSection1, toSection: .audio)
-//        snapshot.appendItems(itemsInSection1, toSection: .video)
+        let chartCount = list.data?.chartList?.count ?? 0
+        let itemsInSection1 = (0..<chartCount).map { Item(identifier: $0, chartList: list.data?.chartList, genreList: nil, audioList: nil, videoList: nil)}
+        snapshot.appendItems(itemsInSection1, toSection: .chart)
+        
+        let genreCount = list.data?.sectionList?.count ?? 0
+        let itemsInSection2 = (0..<genreCount).map { Item(identifier: $0, chartList: nil, genreList: list.data?.sectionList, audioList: nil, videoList: nil)}
+        snapshot.appendItems(itemsInSection2, toSection: .genre)
+        
+        let audioCount = list.data?.programCategoryList?.list?.count ?? 0
+        let itemsInSection3 = (0..<audioCount).map { Item(identifier: $0, chartList: nil, genreList: nil, audioList: list.data?.programCategoryList?.list, videoList: nil)}
+        snapshot.appendItems(itemsInSection3, toSection: .audio)
+        
+        let videoCount = list.data?.videoPlayList?.videoList?.count ?? 0
+        let itemsInSection4 = (1..<videoCount).map { Item(identifier: $0, chartList: nil, genreList: nil, audioList: nil, videoList: list.data?.videoPlayList?.videoList)}
+        snapshot.appendItems(itemsInSection4, toSection: .video)
+        
         self.dataSource.apply(snapshot, animatingDifferences: true)
     }
     
 }
-

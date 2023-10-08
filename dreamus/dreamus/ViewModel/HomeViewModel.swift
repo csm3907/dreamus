@@ -12,14 +12,23 @@ class HomeViewModel: Reactor {
     
     enum Action {
         case viewDidLoad
+        case selectItem(trackID: Int?, artistName: String?)
+        case getTrackDetail(trackID: Int)
+        case selectSection(sectionID: Int)
     }
     
     enum Mutation {
         case getListData(DreamUsList?)
+        case getDetailVC(trackID: Int?, artistName: String?)
+        case getTrackDetailInfo(song: SongDetailModel?)
+        case selectSection(sectionID: Int)
     }
     
     struct State {
         var listData: DreamUsList?
+        var detailVC: (trackID: Int?, artistName: String?)
+        var trackDetailInfo: SongDetailModel?
+        var section: Int?
     }
     
     let initialState: State
@@ -35,6 +44,17 @@ class HomeViewModel: Reactor {
             return network.getList()
                 .map { Mutation.getListData($0) }
                 .asObservable()
+            
+        case .selectItem(let trackID, let artistName):
+            return .just(.getDetailVC(trackID: trackID, artistName: artistName))
+            
+        case .getTrackDetail(let trackID):
+            return network.getTrackDetailInfo(trackID: trackID)
+                .map { Mutation.getTrackDetailInfo(song: $0) }
+                .asObservable()
+            
+        case .selectSection(let sectionID):
+            return .just(.selectSection(sectionID: sectionID))
         }
     }
     
@@ -43,8 +63,16 @@ class HomeViewModel: Reactor {
         
         switch mutation {
         case .getListData(let listData):
-            print("list Data : \(String(describing: listData))")
             reduceState.listData = listData
+            
+        case .getDetailVC(let trackID, let artistName):
+            reduceState.detailVC = (trackID, artistName)
+            
+        case .getTrackDetailInfo(let track):
+            reduceState.trackDetailInfo = track
+            
+        case .selectSection(let sectionID):
+            reduceState.section = sectionID
         }
         
         return reduceState
