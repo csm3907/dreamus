@@ -34,9 +34,9 @@ class ImageCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        imageView.kf.cancelDownloadTask()
-        imageView.kf.setImage(with: URL(string: ""))
-        imageView.image = nil
+        //imageView.kf.cancelDownloadTask()
+        //imageView.kf.setImage(with: URL(string: ""))
+        //imageView.image = nil
     }
     
     func setupViews() {
@@ -56,11 +56,12 @@ class ImageCell: UICollectionViewCell {
     
     func configure(imageUrl: String, title: String) {
         if let imageURL = URL(string: imageUrl) {
-            UIImage.loadImage(fromURL: imageURL) { [weak self] (modifiedImage) in
+            UIImage.loadImage(fromURL: imageURL) { [weak self] image in
                 guard let self else { return }
-                if let modifiedImage = modifiedImage {
+                if let image = image {
+                    let stretchedImage = image.stretchableImage(withLeftCapWidth: 1, topCapHeight: 0)
                     DispatchQueue.main.async {
-                        self.imageView.image = modifiedImage
+                        self.imageView.image = stretchedImage
                     }
                     
                 }

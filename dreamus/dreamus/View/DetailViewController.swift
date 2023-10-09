@@ -16,6 +16,7 @@ class DetailViewController: UIViewController, ReactorKit.View {
         let lbl = UILabel()
         lbl.font = .systemFont(ofSize: 16, weight: .bold)
         lbl.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        lbl.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return lbl
     }()
     
@@ -30,6 +31,7 @@ class DetailViewController: UIViewController, ReactorKit.View {
         button.setImage(UIImage(systemName: "x.circle"), for: .normal)
         button.tintColor = .black
         button.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         return button
     }()
     
@@ -59,12 +61,12 @@ class DetailViewController: UIViewController, ReactorKit.View {
     func bind(reactor: HomeViewModel) {
         reactor.state
             .compactMap { $0.trackDetailInfo }
-            .asDriver(onErrorJustReturn: SongDetailModel())
-            .drive(with: self) { vc, model in
-                vc.lyricsTextView.text = model.data?.lyrics ?? "가사 정보 없음"
-                vc.titleLabel.text = model.data?.name
-                vc.subTitleLabel.text = vc.artistName
-            }
+            .subscribe(onNext: { [weak self] model in
+                guard let self else { return }
+                self.lyricsTextView.text = model.data?.lyrics ?? "가사 정보 없음"
+                self.titleLabel.text = model.data?.name
+                self.subTitleLabel.text = self.artistName
+            })
             .disposed(by: disposeBag)
         
         closeButton.rx.tap
@@ -81,6 +83,10 @@ class DetailViewController: UIViewController, ReactorKit.View {
         
         view.backgroundColor = .white
         reactor?.action.onNext(.getTrackDetail(trackID: trackID))
+    }
+    
+    deinit {
+        print("DetailViewController deinit")
     }
     
     private func setupViews() {

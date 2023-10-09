@@ -77,7 +77,7 @@ class ViewController: UIViewController, ReactorKit.View {
         
         reactor.state
             .compactMap { $0.detailVC }
-            .subscribe(on: MainScheduler.instance)
+            .observe(on: MainScheduler.asyncInstance)
             .subscribe(onNext: { [weak self] params in
                 guard let self else { return }
                 guard let trackID = params.trackID else { return }
@@ -94,7 +94,6 @@ class ViewController: UIViewController, ReactorKit.View {
                 guard let self else { return }
                 let indexPathToScroll = IndexPath(item: 0, section: sectionIndex)
                 if let headerAttributes = collectionView.layoutAttributesForSupplementaryElement(ofKind: UICollectionView.elementKindSectionHeader, at: indexPathToScroll) {
-                    // 섹션 헤더 뷰의 frame을 가져와 스크롤 위치로 설정합니다.
                     let headerFrame = headerAttributes.frame
                     self.collectionView.setContentOffset(CGPoint(x: 0, y: headerFrame.origin.y), animated: true)
                 } else {
@@ -131,19 +130,18 @@ class ViewController: UIViewController, ReactorKit.View {
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
         
-        collectionView.rx.contentOffset
-            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+        collectionView.rx.didScroll
             .observe(on: MainScheduler.asyncInstance)
             .subscribe(onNext: { [weak self] _ in
                 guard let self else { return }
                 guard let indexPath = self.collectionView.indexPathsForVisibleItems.first else {
                     return
                 }
-                print("indexPath : \(indexPath.section)")
-                self.reactor?.action.onNext(.selectSection(sectionID: indexPath.section))
+                if self.collectionView.isTracking || self.collectionView.isDragging || self.collectionView.isDecelerating {
+                    self.reactor?.action.onNext(.scrollSection(sectionID: indexPath.section))
+                }
             })
             .disposed(by: disposeBag)
-        
     }
     
     private func makeDataSource() {

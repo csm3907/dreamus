@@ -15,6 +15,7 @@ class HomeViewModel: Reactor {
         case selectItem(trackID: Int?, artistName: String?)
         case getTrackDetail(trackID: Int)
         case selectSection(sectionID: Int)
+        case scrollSection(sectionID: Int)
     }
     
     enum Mutation {
@@ -22,13 +23,15 @@ class HomeViewModel: Reactor {
         case getDetailVC(trackID: Int?, artistName: String?)
         case getTrackDetailInfo(song: SongDetailModel?)
         case selectSection(sectionID: Int)
+        case scrollSection(sectionID: Int)
     }
     
     struct State {
         var listData: DreamUsList?
-        var detailVC: (trackID: Int?, artistName: String?)
+        var detailVC: (trackID: Int?, artistName: String?)?
         var trackDetailInfo: SongDetailModel?
         var section: Int?
+        var scrollSection: Int?
     }
     
     let initialState: State
@@ -55,6 +58,9 @@ class HomeViewModel: Reactor {
             
         case .selectSection(let sectionID):
             return .just(.selectSection(sectionID: sectionID))
+            
+        case .scrollSection(let sectionID):
+            return .just(.scrollSection(sectionID: sectionID))
         }
     }
     
@@ -69,10 +75,16 @@ class HomeViewModel: Reactor {
             reduceState.detailVC = (trackID, artistName)
             
         case .getTrackDetailInfo(let track):
+            reduceState.detailVC = nil
             reduceState.trackDetailInfo = track
             
         case .selectSection(let sectionID):
             reduceState.section = sectionID
+            reduceState.scrollSection = nil
+            
+        case .scrollSection(let sectionID):
+            reduceState.scrollSection = sectionID
+            reduceState.section = nil
         }
         
         return reduceState

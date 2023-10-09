@@ -51,11 +51,11 @@ class SectionView: UIView {
     
     private func bind() {
         reactor?.state
-            .compactMap { $0.section }
+            .compactMap { $0.scrollSection }
             .subscribe(on: MainScheduler.instance)
             .subscribe { [weak self] sectionIndex in
                 guard let self else { return }
-                //self.collectionView.selectItem(at: IndexPath(row: sectionIndex, section: 0), animated: false, scrollPosition: .left)
+                self.collectionView.selectItem(at: IndexPath(row: sectionIndex, section: 0), animated: false, scrollPosition: .left)
             }
             .disposed(by: disposeBag)
     }
