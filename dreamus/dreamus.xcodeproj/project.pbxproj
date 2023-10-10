@@ -34,6 +34,8 @@
 		CEF9665A2AD2B77300D603C3 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF966592AD2B77300D603C3 /* UIImage+Extension.swift */; };
 		CEF9665C2AD2CC7600D603C3 /* ChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF9665B2AD2CC7600D603C3 /* ChartCell.swift */; };
 		CEF9665E2AD2D93200D603C3 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF9665D2AD2D93200D603C3 /* DetailViewController.swift */; };
+		CEF966602AD4CFD100D603C3 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF9665F2AD4CFD100D603C3 /* NetworkError.swift */; };
+		CEF966622AD4D91400D603C3 /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF966612AD4D91400D603C3 /* UIApplication+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +69,8 @@
 		CEF966592AD2B77300D603C3 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		CEF9665B2AD2CC7600D603C3 /* ChartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartCell.swift; sourceTree = "<group>"; };
 		CEF9665D2AD2D93200D603C3 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		CEF9665F2AD4CFD100D603C3 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		CEF966612AD4D91400D603C3 /* UIApplication+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
 		D740469839D9F955275B179B /* Pods-dreamus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dreamus.debug.xcconfig"; path = "Target Support Files/Pods-dreamus/Pods-dreamus.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -175,6 +179,7 @@
 				CEF9664E2AD1B7FA00D603C3 /* Provider */,
 				CEABD93F2AD19F2000B0EDDA /* Target */,
 				CEF966452AD1A41F00D603C3 /* NetworkProvider.swift */,
+				CEF9665F2AD4CFD100D603C3 /* NetworkError.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -194,6 +199,7 @@
 				CEF966532AD2973C00D603C3 /* UIViewController+Extension.swift */,
 				CEF966552AD2974F00D603C3 /* UIImageView+Extension.swift */,
 				CEF966592AD2B77300D603C3 /* UIImage+Extension.swift */,
+				CEF966612AD4D91400D603C3 /* UIApplication+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -349,6 +355,7 @@
 				CEF966542AD2973C00D603C3 /* UIViewController+Extension.swift in Sources */,
 				CEF9665A2AD2B77300D603C3 /* UIImage+Extension.swift in Sources */,
 				CEF966582AD29F9300D603C3 /* GenreView.swift in Sources */,
+				CEF966622AD4D91400D603C3 /* UIApplication+Extension.swift in Sources */,
 				CEABD9362ACF057A00B0EDDA /* VideoHeader.swift in Sources */,
 				CEF966562AD2974F00D603C3 /* UIImageView+Extension.swift in Sources */,
 				CEABD93A2ACF0A8400B0EDDA /* VideoCell.swift in Sources */,
@@ -356,6 +363,7 @@
 				CEABD9412AD1A0B700B0EDDA /* DreamusAPI.swift in Sources */,
 				CEF966522AD28E8700D603C3 /* ImageCell.swift in Sources */,
 				CEABD9162ACE50D500B0EDDA /* AppDelegate.swift in Sources */,
+				CEF966602AD4CFD100D603C3 /* NetworkError.swift in Sources */,
 				CEF966482AD1AC7200D603C3 /* HomeViewModel.swift in Sources */,
 				CEABD9382ACF085900B0EDDA /* VideoView.swift in Sources */,
 				CEABD9322ACE917300B0EDDA /* TitleHeaderView.swift in Sources */,

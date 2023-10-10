@@ -375,7 +375,6 @@ class ViewController: UIViewController, ReactorKit.View {
     }
     
     func performQuery(with list: DreamUsList) {
-        guard let listData = list.data else { return }
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
         snapshot.appendSections([.chart, .genre, .audio, .video])
         

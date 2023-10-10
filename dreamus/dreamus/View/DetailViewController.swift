@@ -75,7 +75,6 @@ class DetailViewController: UIViewController, ReactorKit.View {
                 vc.dismiss(animated: true)
             }
             .disposed(by: disposeBag)
-        
     }
     
     override func viewDidLoad() {
