@@ -62,7 +62,7 @@ class NetworkProvider {
                             } else if let rawString = String(data: response.data, encoding: .utf8) {
                                 message = "FAILURE: (\(response.statusCode))\n\(rawString)"
                             } else {
-                                message = "FAILURE: (\(response.statusCode)"
+                                message = "FAILURE: (\(response.statusCode)\n\(error.localizedDescription)"
                             }
                         }
                         

@@ -60,6 +60,16 @@ class DetailViewController: UIViewController, ReactorKit.View {
     
     func bind(reactor: HomeViewModel) {
         reactor.state
+            .compactMap { $0.resetDetailVC }
+            .subscribe(onNext: { [weak self] _ in
+                guard let self else { return }
+                self.lyricsTextView.text = ""
+                self.titleLabel.text = ""
+                self.subTitleLabel.text = ""
+            })
+            .disposed(by: disposeBag)
+        
+        reactor.state
             .compactMap { $0.trackDetailInfo }
             .subscribe(onNext: { [weak self] model in
                 guard let self else { return }

@@ -24,6 +24,7 @@ class HomeViewModel: Reactor {
         case getTrackDetailInfo(song: SongDetailModel?)
         case selectSection(sectionID: Int)
         case scrollSection(sectionID: Int)
+        case detailVCReset
     }
     
     struct State {
@@ -32,6 +33,7 @@ class HomeViewModel: Reactor {
         var trackDetailInfo: SongDetailModel?
         var section: Int?
         var scrollSection: Int?
+        var resetDetailVC: Bool?
     }
     
     let initialState: State
@@ -52,9 +54,14 @@ class HomeViewModel: Reactor {
             return .just(.getDetailVC(trackID: trackID, artistName: artistName))
             
         case .getTrackDetail(let trackID):
-            return network.getTrackDetailInfo(trackID: trackID)
-                .map { Mutation.getTrackDetailInfo(song: $0) }
-                .asObservable()
+            let result = Observable.concat([
+                .just(Mutation.detailVCReset),
+                network.getTrackDetailInfo(trackID: trackID)
+                    .map { Mutation.getTrackDetailInfo(song: $0) }
+                    .asObservable()
+            ])
+            
+            return result
             
         case .selectSection(let sectionID):
             return .just(.selectSection(sectionID: sectionID))
@@ -75,7 +82,6 @@ class HomeViewModel: Reactor {
             reduceState.detailVC = (trackID, artistName)
             
         case .getTrackDetailInfo(let track):
-            reduceState.detailVC = nil
             reduceState.trackDetailInfo = track
             
         case .selectSection(let sectionID):
@@ -85,6 +91,11 @@ class HomeViewModel: Reactor {
         case .scrollSection(let sectionID):
             reduceState.scrollSection = sectionID
             reduceState.section = nil
+            
+        case .detailVCReset:
+            reduceState.detailVC = nil
+            reduceState.resetDetailVC = true
+            reduceState.trackDetailInfo = nil
         }
         
         return reduceState
